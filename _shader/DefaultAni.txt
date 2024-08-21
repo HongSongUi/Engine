@@ -1,0 +1,54 @@
+struct VS_IN{
+	float3 p : POSITION;
+	float3 n : NORMAL;
+	float4 c : COLOR;
+	float2 t : TEXTURE;
+	
+	float4 index : INDEX;
+	float4 weight : WEIGHT;
+};
+struct VS_OUT{
+	float4 p :	SV_POSITION;
+	float3 n :  NORMAL;
+	float4 c :	COLOR0;
+	float2 t :	TEXCOORD0;
+	float4 World : TEXCOORD1;
+};
+cbuffer cb_data : register(b0){
+	matrix g_WorldMat : packoffset(c0);
+	matrix g_ViewMat : packoffset(c4);
+	matrix g_ProjMat : packoffset(c8);
+};
+cbuffer cb_Animation : register(b1){
+	matrix MatBone[255];
+};
+VS_OUT VS(VS_IN input){
+	VS_OUT output = (VS_OUT)0;
+	float4 Local = float4(input.p,1.0f);
+	float4 Anim = 0;
+	float4 AnimNormal = 0;
+	for(int Bone = 0 ; Bone<4; Bone++){
+		int BoneIndex = input.index[Bone];
+		float Weight = input.weight[Bone];
+		Anim += mul(Local, MatBone[BoneIndex]) * Weight;
+		AnimNormal += mul(input.n , MatBone[BoneIndex]) * Weight;
+	}
+	float4 World = mul(Anim, g_WorldMat);
+	float4 View = mul(World,g_ViewMat);
+	float4 Proj = mul(View, g_ProjMat);
+	output.p = Proj;
+	output.n = AnimNormal;
+	output.World = World;
+	
+	output.c = input.c;
+	output.t = input.t;
+	return output;
+}
+Texture2D g_txTex			: register(t0);
+SamplerState g_SampleWrap	: register(s0);
+
+float4 PS(VS_OUT input) : SV_Target{
+	float4 Color = g_txTex.Sample(g_SampleWrap , input.t);
+	input.c.a= 1.0f;
+	return Color;
+}
