@@ -1,7 +1,7 @@
 #pragma once
-#include "Device.h"
-#include "Collision.h"
-#include "ObjectMesh.h"
+#include "DirectX/Device.h"
+#include "Math/Collision.h"
+#include "Object/ObjectMesh.h"
 class Node
 {
 public:

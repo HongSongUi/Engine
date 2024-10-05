@@ -1,5 +1,5 @@
 #pragma once
-#include "GameMap.h"
+#include "Object/GameMap.h"
 #include "QuadTree.h"
 struct VertexInfo
 {

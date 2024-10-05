@@ -1,5 +1,5 @@
 #include "QuadTree.h"
-#include "Object3D.h"
+#include "Object/Object3D.h"
 
 bool QuadTree::Render()
 {

@@ -1,16 +1,16 @@
 #pragma once
 #include "GameWindow.h"
-#include "Device.h"
-#include "Timer.h"
-#include "Input.h"
-#include "Writer.h"
-#include "TextureManager.h"
-#include "ShaderManager.h"
-#include "SoundManager.h"
-#include "DxState.h"
-#include "BaseObject.h"
+#include "DirectX/Device.h"
+#include "Utility/Timer.h"
+#include "Utility/Input.h"
+#include "DirectX/Writer.h"
+#include "Manager/TextureManager.h"
+#include "Manager/ShaderManager.h"
+#include "Manager/SoundManager.h"
+#include "DirectX/DxState.h"
+#include "Object/BaseObject.h"
 #include "RenderToTexture.h"
-#include "DebugCamera.h"
+#include "Camera/DebugCamera.h"
 
 class GameCore
 {

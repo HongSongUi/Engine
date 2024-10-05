@@ -39,98 +39,11 @@
     <ClInclude Include="GameWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="DxState.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Writer.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MathLib.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="ReSUtility.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSound.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultCamera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera2D.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera3D.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugCamera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectMesh.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="GameCore.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RenderToTexture.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Object2D.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3D.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxEntity.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxObjMesh.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxSceneLoader.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Picking.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMap.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>헤더 파일</Filter>
@@ -141,100 +54,103 @@
     <ClInclude Include="HeightMap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\Camera2D.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera3D.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\DebugCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\DefaultCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Collision.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Frustum.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathLib.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\ShaderManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\SoundManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\TextureManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\Character.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FbxEntity.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FbxObjMesh.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FbxSceneLoader.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\Device.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\DxState.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\Shader.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\Texture.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\Writer.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BaseObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\GameMap.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object2D.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object3D.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ObjectMesh.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\GameSound.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Input.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Picking.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ReSUtility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Timer.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameWindow.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="DxState.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Writer.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="MathLib.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSound.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultCamera.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera2D.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera3D.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugCamera.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectMesh.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseObject.cpp">
-      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameCore.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="RenderToTexture.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Object2D.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object3D.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxSceneLoader.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxObjMesh.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxEntity.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Picking.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMap.cpp">
-      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>소스 파일</Filter>
@@ -244,6 +160,90 @@
     </ClCompile>
     <ClCompile Include="HeightMap.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera2D.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera3D.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\DebugCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\DefaultCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Collision.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Frustum.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MathLib.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\ShaderManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\SoundManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\TextureManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\Character.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FbxEntity.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FbxObjMesh.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FbxSceneLoader.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Device.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\DxState.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Shader.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Texture.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\Writer.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BaseObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\GameMap.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Object2D.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Object3D.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ObjectMesh.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\GameSound.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Input.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Picking.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Timer.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

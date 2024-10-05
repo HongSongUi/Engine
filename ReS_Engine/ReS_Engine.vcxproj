@@ -19,77 +19,77 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseObject.h" />
-    <ClInclude Include="Camera2D.h" />
-    <ClInclude Include="Camera3D.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="DebugCamera.h" />
-    <ClInclude Include="DefaultCamera.h" />
-    <ClInclude Include="Device.h" />
-    <ClInclude Include="DxState.h" />
-    <ClInclude Include="FbxSceneLoader.h" />
-    <ClInclude Include="FbxObjMesh.h" />
-    <ClInclude Include="FbxEntity.h" />
-    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Camera\Camera2D.h" />
+    <ClInclude Include="Camera\Camera3D.h" />
+    <ClInclude Include="Camera\DebugCamera.h" />
+    <ClInclude Include="Camera\DefaultCamera.h" />
+    <ClInclude Include="DirectX\Device.h" />
+    <ClInclude Include="DirectX\DxState.h" />
+    <ClInclude Include="DirectX\Shader.h" />
+    <ClInclude Include="DirectX\Texture.h" />
+    <ClInclude Include="DirectX\Writer.h" />
+    <ClInclude Include="FBX\Character.h" />
+    <ClInclude Include="FBX\FbxEntity.h" />
+    <ClInclude Include="FBX\FbxObjMesh.h" />
+    <ClInclude Include="FBX\FbxSceneLoader.h" />
     <ClInclude Include="GameCore.h" />
-    <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="HeightMap.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="MathLib.h" />
+    <ClInclude Include="Manager\ShaderManager.h" />
+    <ClInclude Include="Manager\SoundManager.h" />
+    <ClInclude Include="Manager\TextureManager.h" />
+    <ClInclude Include="Math\Collision.h" />
+    <ClInclude Include="Math\Frustum.h" />
+    <ClInclude Include="Math\MathLib.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Object2D.h" />
-    <ClInclude Include="Object3D.h" />
-    <ClInclude Include="ObjectMesh.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Picking.h" />
+    <ClInclude Include="Object\BaseObject.h" />
+    <ClInclude Include="Object\GameMap.h" />
+    <ClInclude Include="Object\Object2D.h" />
+    <ClInclude Include="Object\Object3D.h" />
+    <ClInclude Include="Object\ObjectMesh.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderToTexture.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderManager.h" />
-    <ClInclude Include="GameSound.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="ReSUtility.h" />
-    <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Writer.h" />
+    <ClInclude Include="Utility\GameSound.h" />
+    <ClInclude Include="Utility\Input.h" />
+    <ClInclude Include="Utility\Picking.h" />
+    <ClInclude Include="Utility\ReSUtility.h" />
+    <ClInclude Include="Utility\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseObject.cpp" />
-    <ClCompile Include="Camera2D.cpp" />
-    <ClCompile Include="Camera3D.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="DebugCamera.cpp" />
-    <ClCompile Include="DefaultCamera.cpp" />
-    <ClCompile Include="Device.cpp" />
-    <ClCompile Include="DxState.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="FbxSceneLoader.cpp" />
-    <ClCompile Include="FbxObjMesh.cpp" />
-    <ClCompile Include="FbxEntity.cpp" />
-    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="Camera\Camera2D.cpp" />
+    <ClCompile Include="Camera\Camera3D.cpp" />
+    <ClCompile Include="Camera\DebugCamera.cpp" />
+    <ClCompile Include="Camera\DefaultCamera.cpp" />
+    <ClCompile Include="DirectX\Device.cpp" />
+    <ClCompile Include="DirectX\DxState.cpp" />
+    <ClCompile Include="DirectX\Shader.cpp" />
+    <ClCompile Include="DirectX\Texture.cpp" />
+    <ClCompile Include="DirectX\Writer.cpp" />
+    <ClCompile Include="FBX\Character.cpp" />
+    <ClCompile Include="FBX\FbxEntity.cpp" />
+    <ClCompile Include="FBX\FbxObjMesh.cpp" />
+    <ClCompile Include="FBX\FbxSceneLoader.cpp" />
     <ClCompile Include="GameCore.cpp" />
-    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="HeightMap.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="MathLib.cpp" />
+    <ClCompile Include="Manager\ShaderManager.cpp" />
+    <ClCompile Include="Manager\SoundManager.cpp" />
+    <ClCompile Include="Manager\TextureManager.cpp" />
+    <ClCompile Include="Math\Collision.cpp" />
+    <ClCompile Include="Math\Frustum.cpp" />
+    <ClCompile Include="Math\MathLib.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Object2D.cpp" />
-    <ClCompile Include="Object3D.cpp" />
-    <ClCompile Include="ObjectMesh.cpp" />
-    <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="Object\BaseObject.cpp" />
+    <ClCompile Include="Object\GameMap.cpp" />
+    <ClCompile Include="Object\Object2D.cpp" />
+    <ClCompile Include="Object\Object3D.cpp" />
+    <ClCompile Include="Object\ObjectMesh.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderToTexture.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
-    <ClCompile Include="GameSound.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Writer.cpp" />
+    <ClCompile Include="Utility\GameSound.cpp" />
+    <ClCompile Include="Utility\Input.cpp" />
+    <ClCompile Include="Utility\Picking.cpp" />
+    <ClCompile Include="Utility\Timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -146,6 +146,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>../../output/Debug/Res_Engine</OutDir>
     <IntDir>../../output/Debug/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>../../output/Release/Res_Engine</OutDir>
+    <IntDir>../../output/Release/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -213,8 +217,9 @@ copy "ReS_Engine_D.lib" "..\\_lib"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>../_include/DxTk;../_include/Fmod;../_fbxsdk/include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -223,6 +228,14 @@ copy "ReS_Engine_D.lib" "..\\_lib"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <OutputFile>ReS_Engine_R.lib</OutputFile>
+      <AdditionalLibraryDirectories>../_fbxsdk/lib/vs2019/x64/debug</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>copy "*.h" "..\\_include"
+copy "ReS_Engine_R.lib" "..\\_lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #pragma once
 #include "Node.h"
-#include "Frustum.h"
+#include "Math/Frustum.h"
 
 class QuadTree
 {

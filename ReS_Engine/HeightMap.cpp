@@ -1,6 +1,6 @@
 #include "HeightMap.h"
-#include "TextureManager.h"
-#include "Object3D.h"
+#include "Manager/TextureManager.h"
+#include "Object/Object3D.h"
 void HeightMap::SetMapSize(UINT width, UINT height, float cellDistance)
 {
     MapWidth = width + 1;
