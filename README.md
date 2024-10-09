@@ -29,20 +29,67 @@
 - **FBX 파일 로드**: FBX 파일을 로드하는 기능을 통해 3D 모델을 쉽게 임포트 가능.
 
 ## How To Use
+
+1. 클래스 생성: GameCore를 상속받은 클래스를 생성합니다. 이 클래스에서 Init, Frame, Render, Release 함수를 구현합니다.
+	* Sample.h
+	  ```cpp
+	  #include "GameCore.h"
+	  class Sample : public GameCore
+	  {
+	
+	  public:
+		bool Init();
+		bool Frame();
+		bool Render();
+		bool Release();
+	  };
+  
+	* Sample.cpp
+   		```cpp
+     	#include "Sample.h"
+		 bool Sample::Init() 
+		{
+		    // 초기화 코드 작성
+		    return true;
+		}
+		
+		bool Sample::Frame()
+		{
+		    // 프레임 처리 코드 작성
+		    return true;
+		}
+		
+		bool Sample::Render() 
+		{
+		    // 렌더링 코드 작성
+		    return true;
+		}
+		
+		bool Sample::Release()
+		{
+		    // 자원 해제 코드 작성
+		    return true;
+		}
+		
+		int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+		    _In_opt_ HINSTANCE hPrevInstance,
+		    _In_ LPWSTR lpCmdLine,
+		    _In_ int nCmdShow)
+		{
+	
+		    Sample MyWin;
+		    MyWin.SetWindow(hInstance, L"test", 1000, 700);
+		    MyWin.Run();
+		
+		    return 1;
+		}
+
+2. wWinMain 함수 생성: 위의 코드처럼 Sample.cpp에 wWinMain 함수를 생성하여 프로그램의 시작점을 설정합니다.
+
 * 엔진 구조의 간단한 시퀀스 다이어그램
   
 <img src ="https://github.com/user-attachments/assets/4a8e8dbf-0bff-422c-be88-7059ea0b83e7">
 
-* GameCore를 상속받은 클래스를 생성, Init, Frame, Render, Release 함수 구현
-  ```cpp
-  #include "GameCore.h"
-  class Sample : public GameCore
-  {
+## Projects Developed Using This Engine
 
-  public:
-	bool Init();
-	bool Frame();
-	bool Render();
-	bool Release();
-  };
-
+[Megaman X5](https://github.com/HongSongUi/RockMan) [Map Tool](https://github.com/HongSongUi/MapTool)
