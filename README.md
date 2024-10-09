@@ -28,4 +28,21 @@
   
 - **FBX 파일 로드**: FBX 파일을 로드하는 기능을 통해 3D 모델을 쉽게 임포트 가능.
 
-## 
+## How To Use
+* 엔진 구조의 간단한 시퀀스 다이어그램
+  
+<img src ="https://github.com/user-attachments/assets/4a8e8dbf-0bff-422c-be88-7059ea0b83e7">
+
+* GameCore를 상속받은 클래스를 생성, Init, Frame, Render, Release 함수 구현
+  ```cpp
+  #include "GameCore.h"
+  class Sample : public GameCore
+  {
+
+  public:
+	bool Init();
+	bool Frame();
+	bool Render();
+	bool Release();
+  };
+
