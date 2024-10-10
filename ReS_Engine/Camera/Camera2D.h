@@ -4,7 +4,7 @@ class Camera2D : public DefaultCamera
 {
 public:
 	Vector2 Position;
-	Vector2 CameraSize;
+	Vector2 CameraSize; 
 	Vector2 Min;
 	Vector2 Max;
 public:

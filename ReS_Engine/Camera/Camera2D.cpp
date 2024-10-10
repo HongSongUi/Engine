@@ -22,6 +22,7 @@ bool Camera2D::Release()
 
 void Camera2D::SetData(Vector2 Pos, Vector2 CamSize)
 {
+    //Initialize Camera Data 
     Position = Pos;
     CameraSize = CamSize;
     Vector2 temp = CameraSize;

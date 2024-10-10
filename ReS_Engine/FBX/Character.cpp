@@ -200,25 +200,28 @@ void Character::SetTransform(Vector3* pos, Vector3* scale, Vector3* rot)
 		Rotation = *rot;
 	}
 
-
+	// Create a matrix
 	TransposMat = TransposMat.CreateTranslation(Position);
 	ScaleMat = ScaleMat.CreateScale(Scale);
 	RotationMat = RotationMat.CreateFromYawPitchRoll(Rotation.y, Rotation.x, Rotation.z);
 
-
-	UpdateScaleMat = UpdateScaleMat.CreateScale(UpdateScaleVec);
+	// Create an update scale matrix based on the update scale vector.
+	UpdateScaleMat = UpdateScaleMat.CreateScale(UpdateScaleVec); 
 	UpdateScaleMat = ScaleMat * UpdateScaleMat;
 
+	// Create a quaternion based on the updated rotation values.
 	Quater = Quater.CreateFromYawPitchRoll(UpdateRotationVal.y, UpdateRotationVal.x, UpdateRotationVal.z);
 	UpdateRotationMat = UpdateRotationMat.CreateFromQuaternion(Quater);
 
-	UpdateRotationMat = RotationMat * UpdateRotationMat;
+	UpdateRotationMat = RotationMat * UpdateRotationMat; // Create an update rotation matrix from the quaternion.
 
 	WorldMat = ScaleMat * RotationMat * TransposMat;
 }
 
 void Character::SetObjBox()
 {
+	// Loop through each vertex to find the min and max positions.
+
 	for (int mesh = 0; mesh < FbxFile->DrawObjList.size(); mesh++)
 	{
 		std::vector<Vertex>& drawObjVertex = FbxFile->DrawObjList[mesh]->VertexList;
@@ -257,11 +260,11 @@ void Character::SetObjBox()
 	Vector3 size = { WorldMat._11, WorldMat._22, WorldMat._33 };
 
 
-
+	// Transform the Min and Max positions using the World matrix.
 	D3DXVec3TransformCoord(&MaxPos, &MaxPos, &WorldMat);
 	D3DXVec3TransformCoord(&MinPos, &MinPos, &WorldMat);
 
-	ObjectBox.SetBox(MaxPos, MinPos);
+	ObjectBox.SetBox(MaxPos, MinPos);// Set the bounding box using the transformed max and min positions.
 	ObjectBox.SetParent(this);
 }
 

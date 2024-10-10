@@ -21,17 +21,18 @@ struct ActionTable
 class Character : public Object3D
 {
 public:
-	UINT FbxListID; //Manage fbx files as id
+	UINT FbxListID; //Manage fbx files Use id
 	FbxSceneLoader* FbxFile = nullptr;
 	std::basic_string<wchar_t> ObjName;
 
-	Vector3 UpdateScaleVec = { 1.0f ,1.0f ,1.0f }; 
-	Vector3 UpdateRotationVal = { 0.0f ,0.0f,0.0f };
+	Vector3 UpdateScaleVec = { 1.0f ,1.0f ,1.0f }; //When converting the scale of fbx
+	Vector3 UpdateRotationVal = { 0.0f ,0.0f,0.0f }; // When converting the Rotation of fbx
 
-	Matrix TransposMat;
+	Matrix UpdateScaleMat; //When converting the scale of fbx
+	Matrix UpdateRotationMat; // When converting the Rotation of fbx
+
+	Matrix TransposMat; 
 	Matrix ScaleMat;
-	Matrix UpdateScaleMat;
-	Matrix UpdateRotationMat;
 
 	Matrix RotationMat;
 	Quaternion Quater;
@@ -49,7 +50,7 @@ public:
 	float AniSpeed = 1.0f;
 
 	FbxSceneLoader* AnionFbxFile = nullptr;
-	std::map<std::wstring, FbxSceneLoader*> ActionFileList;
+	std::map<std::wstring, FbxSceneLoader*> ActionFileList; 
 	std::map<std::wstring, ActionTable> ActionList;
 
 	VS_CONSTANT_BONE_BUFFER BoneData;

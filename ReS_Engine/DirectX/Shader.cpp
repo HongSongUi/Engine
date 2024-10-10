@@ -27,7 +27,7 @@ bool Shader::Release()
 
 HRESULT Shader::Load(std::wstring FileName, ID3D11Device* Device)
 {
-	//«Õ«¡«¤«ëÙ£ªÇshader load
+	//Shader load by filename
 	HRESULT hr;
 	ID3DBlob* ErrorCode = nullptr;
 	hr = D3DCompileFromFile(FileName.c_str(), NULL, NULL, "VS", "vs_5_0", 0, 0, &VsCode, &ErrorCode);

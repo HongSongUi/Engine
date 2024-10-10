@@ -4,10 +4,10 @@
 #include "FbxSceneLoader.h"
 HRESULT FbxEntity::LoadTexture(std::wstring file_name)
 {
-	std::wstring path = L"../../fbx/";
+	std::wstring path = L"../../fbx/";// Define the path to the texture files.
 	TextureFileName = path + file_name;
 	HRESULT hr = S_OK;
-	if (TextureFileList.size() > 1) 
+	if (TextureFileList.size() > 1)  // Check if there is more than one texture file in the list.
 	{
 		SubTextureList.resize(TextureFileList.size());
 		for (int Tex = 0; Tex < TextureFileList.size(); Tex++) 
@@ -29,7 +29,7 @@ HRESULT FbxEntity::LoadTexture(std::wstring file_name)
 			hr = S_FALSE;
 		}
 		else {
-			ObjMesh.TextureSRV = TextureFile->TextureSRV;
+			ObjMesh.TextureSRV = TextureFile->TextureSRV;// Assign the shader resource view of the loaded texture to the ObjMesh.
 		}
 	}
 	return hr;
@@ -65,7 +65,7 @@ void FbxEntity::SetParent(FbxEntity* parent)
 
 bool FbxEntity::CreateVertex()
 {
-	if (VertexList.size() == 0) 
+	if (VertexList.size() == 0) //Check if the VertexList is empty.
 	{
 		SetVertexList();
 	}
@@ -80,6 +80,7 @@ bool FbxEntity::CreateVertex()
 	ObjMesh.SetTexture(TextureFile);
 	ObjMesh.SetIWVertexList(IWVertexList);
 
+	//if have sub list
 	if (SubVertexList.size() > 0) 
 	{
 		ObjMesh.SetSubVertexList(SubVertexList);
@@ -92,7 +93,8 @@ bool FbxEntity::CreateVertex()
 	{
 		ObjMesh.SetSubIWVertexList(SubIWVertexList);
 	}
-	if (ObjMesh.Create() == false) 
+
+	if (ObjMesh.Create() == false) //create the ObjMesh
 	{
 		return false;
 	}
@@ -123,8 +125,8 @@ bool FbxEntity::SetData(ID3D11Device* device, ID3D11DeviceContext* context, RECT
 
 Matrix FbxEntity::Interplate(FbxSceneLoader* pAnimImp, float frame)
 {
-	Matrix Ani;
-	AnimTrack A, B;
+	Matrix Ani;// Animation matrix
+	AnimTrack A, B; // Two animation tracks for interpolation.
 	AnimationScene Scene = pAnimImp-> AnimScene;
 	int _start = max(Scene.StartFrame, frame);
 	int _end = min(Scene.EndFrame, frame + 1);

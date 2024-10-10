@@ -2,7 +2,7 @@
 
 HRESULT Texture::Load(ID3D11Device* Device, ID3D11DeviceContext* Context, std::wstring FileName)
 {
-	//«Õ«¡«¤«ëÙ£ªÇtexture load
+	//Texture load by filename
 	HRESULT hr;
 	hr = DirectX::CreateWICTextureFromFile(Device, Context, FileName.c_str(), (ID3D11Resource**)&Texture2D, &TextureSRV);
 	if (FAILED(hr)) 

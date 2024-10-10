@@ -3,9 +3,10 @@
 #include "../Manager/TextureManager.h"
 HRESULT FbxObjMesh::CreateVertexBuffer()
 {
+	//create fbx object vertex buffer
 	HRESULT hr;
 	hr = S_OK;
-	if (SubVertexList.size() > 0) 
+	if (SubVertexList.size() > 0) //if have sub vertex list
 	{
 		SubVertexBuffer.resize(SubVertexList.size());
 		for (int index = 0; index < SubVertexList.size(); index++)
@@ -20,7 +21,7 @@ HRESULT FbxObjMesh::CreateVertexBuffer()
 	{
 		ObjectMesh::CreateVertexBuffer();
 	}
-	if (SubIWVertexList.size() > 0) 
+	if (SubIWVertexList.size() > 0)  // if have sub index/weight list
 	{
 		SubIWVertexBuffer.resize(SubIWVertexList.size());
 		for (int index = 0; index < SubIWVertexList.size(); index++) 

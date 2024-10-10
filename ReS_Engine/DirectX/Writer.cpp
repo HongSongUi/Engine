@@ -6,7 +6,7 @@ bool Writer::Init()
     hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &D2DFactory);
     hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), (IUnknown**)&WriteFactory);
     hr = WriteFactory->CreateTextFormat(L"°íµñ", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 20,
-        L"ko-kr", &TextFormat);
+        L"ko-kr", &TextFormat); // «Õ«©«ó«È«¹«¿«¤«ëªÇ«Æ«­«¹«Èû¡ãÒªòíÂà÷
     DefaultText = L"Hello";
     return true;
 }
@@ -18,6 +18,7 @@ bool Writer::Frame()
 
 bool Writer::Render()
 {
+    //Draw function call
     Draw(0, 0, DefaultText, { 1,0,0,1 });
     return true;
 }

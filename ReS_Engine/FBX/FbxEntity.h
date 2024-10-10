@@ -4,8 +4,10 @@
 #include "../Object/Object3D.h"
 #include <map>
 #include "FbxObjMesh.h"
+
 struct BoneWeight
 {
+	// Stores the Index , weight.
 	std::vector<int> Index;
 	std::vector<float> Weight;
 	void Insert(int Bone, float weight) 
@@ -47,7 +49,7 @@ public:
 	using SubVertex = std::vector<Vertex>;
 	using SubIWVertex = std::vector<IW_VERTEX>;
 	UINT ObjectBone;
-	bool Skinned;
+	bool Skinned; // Flag indicating whether this entity is skinned
 	std::vector<BoneWeight> WeightList;
 	FbxObjMesh ObjMesh;
 	FbxNode* Node = nullptr;

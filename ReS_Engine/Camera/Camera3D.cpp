@@ -39,8 +39,7 @@ bool Camera3D::Frame()
 	}
 
 	Vector3 vUp = { 0,1,0 };
-	//TMatrix mCamera = TMath::RotationY(g_fGameTimer);
-	//vPos = (vPos + vPosMovement) * mCamera;
+	// Create camera flustam using view matrix and projection matrix 
 	D3DXMatrixLookAtLH(&ViewMat, &Position, &Target, &UpVec);
 
 	Update();
@@ -59,6 +58,8 @@ bool Camera3D::Release()
 
 void Camera3D::Update()
 {
+	//Camera Matrix Update
+
 	RightVec.x = ViewMat._11;
 	RightVec.y = ViewMat._21;
 	RightVec.z = ViewMat._31;
