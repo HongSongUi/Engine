@@ -52,6 +52,7 @@ bool GameCore::PostProcess()
 
 bool GameCore::CoreInit()
 {
+	// Init Core Data
 	UseDebugCam = false;
 	Is2DGame = false;
 	GameDevice.SetWindowData(Window.ClientRect, Window.Hwnd);
@@ -76,7 +77,7 @@ bool GameCore::CoreInit()
 
 	BackBuffer->Release();
 	BackBuffer = nullptr;
-	RenderTarget.SetData(GameDevice.D3D11Device, GameDevice.D3D11Context, ClientRect);
+	RenderTarget.SetData(GameDevice.D3D11Device, GameDevice.D3D11Context, ClientRect); // Set RenderToTarget Texture
 	RenderTarget.Load(L"../_shader/DefaultShader.txt", L"../_Texture/FadeOut.png");
 	if (RenderTarget.CreateVertex() == false)
 	{
@@ -85,7 +86,7 @@ bool GameCore::CoreInit()
 	RenderTexture.Create(GameDevice.D3D11Device, 2048, 2048);
 	Init();
 
-	if (UseDebugCam == true)
+	if (UseDebugCam == true) 
 	{
 		DebugCam.CreateViewMatrix(Vector3(0, 10, -10), Vector3(0, 45, 0), Vector3(0, 1, 0));
 		DebugCam.CreateProjMatrix(1.0f, 10000.0f, 3.141592 * 0.25f, (float)ClientRect.right / (float)ClientRect.bottom);
@@ -133,8 +134,8 @@ bool GameCore::CoreRender()
 {
 	CorePreRender();
 	PreRender();
-	//////////////////////////////////////////////
-	if (Is2DGame == false)
+
+	if (Is2DGame == false)	//RenderToTexture Render
 	{
 		RenderTexture.OldDepthStencil = GameDevice.DepthStencilView;
 		RenderTexture.OldRenderTarget = GameDevice.RenderTargetView;
@@ -156,7 +157,6 @@ bool GameCore::CoreRender()
 		Render();
 	}
 
-	///// ////////////////////////////////////////////
 	GameTimer.Render();
 	GameInput.Render();
 
@@ -257,6 +257,8 @@ void GameCore::SetHwnd(HWND hWnd)
 
 void GameCore::ReSizeWindow(UINT width, UINT height)
 {
+	//if Change Widow Size
+	// Create New , After Initialization
 	if (GameDevice.SwapChain == nullptr) 
 	{
 		return;

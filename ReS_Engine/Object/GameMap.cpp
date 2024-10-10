@@ -2,13 +2,13 @@
 
 void GameMap::SetVertexList()
 {
-	VertexList.resize(MapWidth * MapHeight);
+	VertexList.resize(MapWidth * MapHeight);// Resize the VertexList to map size
 	int HalfWidth = MapWidth / 2;
 	int HalfHeight = MapHeight / 2;
 
-	for (int iRow = 0; iRow < MapHeight; iRow++)
+	for (int iRow = 0; iRow < MapHeight; iRow++)// Loop each row of the map
 	{
-		for (int iCol = 0; iCol < MapWidth; iCol++)
+		for (int iCol = 0; iCol < MapWidth; iCol++)// Loop  each column of the map
 		{
 			VertexList[iRow * MapWidth + iCol].Position = { (float)iCol - HalfWidth, 0.0f, (float)HalfHeight - iRow };
 			VertexList[iRow * MapWidth + iCol].Color = { 0,0,0,0 };
@@ -42,6 +42,7 @@ void GameMap::SetIndexList()
 
 void GameMap::SetMapSize(UINT width, UINT height)
 {
+	//init Map width, height
 	MapWidth = width + 1;
 	MapHeight = height + 1;
 

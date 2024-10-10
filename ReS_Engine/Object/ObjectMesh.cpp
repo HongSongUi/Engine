@@ -125,12 +125,14 @@ HRESULT ObjectMesh::CreateConstantBuffer()
 
 void ObjectMesh::SetDevice(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+	//Init device, context
 	D3D11Device = device;
 	D3D11Context = context;
 }
 
 bool ObjectMesh::Create()
 {
+	//Create Buffer
 	if (FAILED(CreateVertexBuffer())) 
 	{
 		return false;

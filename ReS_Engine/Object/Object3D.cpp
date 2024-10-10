@@ -15,6 +15,7 @@ void Object3D::SetMatrix(Matrix* world, Matrix* view, Matrix* proj)
 		ProjMat = *proj;
 	}
 	Mesh.SetMatrix(world, view, proj);
+	//Set Position vector use World Matrix
 	Position.x = Mesh.WorldMat._41;
 	Position.y = Mesh.WorldMat._42;
 	Position.z = Mesh.WorldMat._43;

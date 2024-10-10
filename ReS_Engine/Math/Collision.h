@@ -5,9 +5,9 @@
 
 enum HCollisionType
 {
-	RECT_OUT = 0,
-	RECT_IN,
-	RECT_OVERLAP,
+	RECT_OUT = 0, // No Collsion
+	RECT_IN, // one object is completely inside the other
+	RECT_OVERLAP, // Collsion
 };
 
 struct Rect

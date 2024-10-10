@@ -4,6 +4,7 @@
 
 bool BaseObject::SetData(ID3D11Device* device, ID3D11DeviceContext* context, RECT clientRt)
 {
+    // Init Device, Context, Mesh Data, Window Size
     D3D11Device = device;
     D3D11Context = context;
     Mesh.SetDevice(device, context);
@@ -12,6 +13,7 @@ bool BaseObject::SetData(ID3D11Device* device, ID3D11DeviceContext* context, REC
 }
 bool BaseObject::Load(std::wstring ShaderFileName, std::wstring TextureFileName)
 {
+    // Load Shader File, Texture File
     if (FAILED(ShaderCompile(ShaderFileName)))
     {
         return false;
@@ -24,6 +26,7 @@ bool BaseObject::Load(std::wstring ShaderFileName, std::wstring TextureFileName)
 }
 bool BaseObject::CreateVertex()
 {
+    // Create Mesh
     SetVertexList();
     InitVertexList = VertexList;
     SetIndexList();

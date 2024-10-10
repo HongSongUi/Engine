@@ -2,11 +2,13 @@
 #include "BaseObject.h"
 struct SpriteRect
 {
+	//Manage to Sprite Range
 	float Left;
 	float Top;
 	float Right;
 	float Bottom;
 };
+
 class Object2D : public BaseObject
 {
 private:
@@ -18,7 +20,7 @@ public:
 	Rect ShowRect;
 	POINT TextureSize;
 public:
-	Rect ObjectRect;
+	Rect ObjectRect; // use to collsion
 
 	Vector2 Dir;
 	Vector2 Size;

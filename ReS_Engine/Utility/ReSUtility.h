@@ -2,8 +2,8 @@
 #include <string>
 #include <codecvt>
 
-extern float gGameTimer;
-extern float gSecondPerFrame;
+extern float gGameTimer; // Game Timer
+extern float gSecondPerFrame; // Delta Time
 
 #define randstep(fMin,fMax) (fMin+((float)fMax-(float)fMin)*rand()/(float)RAND_MAX)
 #define H_PI 3.14159265

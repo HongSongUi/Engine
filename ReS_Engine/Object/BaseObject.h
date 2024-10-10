@@ -10,7 +10,7 @@ public:
 	RECT ClientRect;
 	ObjectMesh Mesh;
 
-	class Texture* MaskTexture = nullptr;
+	class Texture* MaskTexture = nullptr; //for use 2D sprite
 	class Texture* TextureFile;
 	class Shader* ShaderFile;
 

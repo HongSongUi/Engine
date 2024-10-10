@@ -2,6 +2,7 @@
 
 void Picking::SetWindowData(HWND hwnd, RECT clientRt)
 {
+	//init Hwnd, Window Client Size
     Hwnd = hwnd;
     ClientRt = clientRt;
 }
@@ -29,25 +30,25 @@ void Picking::SetMatrix(Matrix* pWorld, Matrix* pView, Matrix* pProj)
 void Picking::Update()
 {
 	POINT ptCursor;
-	GetCursorPos(&ptCursor);
-	ScreenToClient(Hwnd, &ptCursor);
+	GetCursorPos(&ptCursor);// Get the current position of the cursor in screen coordinates
+	ScreenToClient(Hwnd, &ptCursor);// Convert the screen coordinates to client coordinates
 
 	Vector3 v;
-
+	// Calculate the normalized device coordinates (NDC) from the cursor position
 	v.x = (((2.0f * ptCursor.x) / ClientRt.right) - 1) / MatProj._11;
 	v.y = -(((2.0f * ptCursor.y) / ClientRt.bottom) - 1) / MatProj._22;
 	v.z = 1.0f;
 
 
-	Matrix mWorldView = MatWorld * MatView;
+	Matrix mWorldView = MatWorld * MatView;// Combine the world and view matrices to get the world-view matrix
 	Matrix m;
-	D3DXMatrixInverse(&m, NULL, &mWorldView);
+	D3DXMatrixInverse(&m, NULL, &mWorldView); // Calculate the inverse of the world-view matrix
 
-	Ray.Origin = Vector3(0.0f, 0.0f, 0.0f);
+	Ray.Origin = Vector3(0.0f, 0.0f, 0.0f); // Set the ray's origin at the camera's position (0, 0, 0)
 	Ray.Direction = Vector3(v.x, v.y, v.z);
-	D3DXVec3TransformCoord(&Ray.Origin, &Ray.Origin, &m);
-	D3DXVec3TransformNormal(&Ray.Direction, &Ray.Direction, &m);
-	D3DXVec3Normalize(&Ray.Direction, &Ray.Direction);
+	D3DXVec3TransformCoord(&Ray.Origin, &Ray.Origin, &m);// Transform the ray's origin from view space to world space
+	D3DXVec3TransformNormal(&Ray.Direction, &Ray.Direction, &m);// Transform the ray's direction from view space to world space
+	D3DXVec3Normalize(&Ray.Direction, &Ray.Direction);// Normalize the ray's direction vector
 
 }
 
@@ -57,9 +58,9 @@ bool Picking::IntersectRayToSphere(Sphere* pSphere, MouseRay* pRay)
 	{
 		pRay = &Ray;
 	}
-	Vector3 dir = pRay->Origin - pSphere->Center;
+	Vector3 dir = pRay->Origin - pSphere->Center;// Calculate the vector from the sphere's center to the ray's origin
 
-	float proj = D3DXVec3Dot(&pRay->Direction, &dir);
+	float proj = D3DXVec3Dot(&pRay->Direction, &dir);// Project the ray's direction onto the 'dir' vector
 
 	if (pRay->Extent > -1.0f && pRay->Extent < fabs(proj))
 	{

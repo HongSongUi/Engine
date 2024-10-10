@@ -3,11 +3,13 @@
 #include "QuadTree.h"
 struct VertexInfo
 {
+	//Map Vertex
 	std::vector<UINT> FaceIndexArray;
 	Vector3 NormalVec;
 };
 struct FaceInfo
 {
+	//Map Face Information
 	UINT VertexArray[3];
 	Vector3 NormalVec;
 };

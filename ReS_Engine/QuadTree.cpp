@@ -3,6 +3,7 @@
 
 bool QuadTree::Render()
 {
+	//Render Node in Draw Node List
 	for (auto node : DrawNode)
 	{
 		D3D11Context->IASetIndexBuffer(node->IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
@@ -32,6 +33,7 @@ void QuadTree::CreateTree(DWORD width, DWORD height, DWORD RowIndex, DWORD ColIn
 
 void QuadTree::BuildTree(Node* Node, int ChildCount)
 {
+	//Build Tree 
 	if (Node->Depth >= MaxDepth) 
 	{
 		Node->LeafNode = true;
@@ -80,6 +82,7 @@ Node* QuadTree::CreateNode(Node* parent, DWORD lt, DWORD rt, DWORD lb, DWORD rb)
 
 void QuadTree::VisibleNode(Node* node)
 {
+	//Check Render Node Use Camera Frustum
 	if (node == nullptr) {
 		return;
 	}
@@ -120,6 +123,7 @@ bool QuadTree::Release()
 
 bool QuadTree::AddObject(Object3D* object)
 {
+	// Insert Object to Node
 	Node* findNode = FindNode(RootNode, object->ObjectBox);
 	if (findNode != nullptr)
 	{
@@ -164,6 +168,7 @@ void QuadTree::SetMatrix(Matrix* view, Matrix* proj)
 
 void QuadTree::RenderObj(Node* node)
 {
+	//Check Render Object Use Camera Frustum
 	if (node == nullptr)
 	{
 		return;

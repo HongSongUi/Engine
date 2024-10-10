@@ -29,6 +29,7 @@ bool Node::Frame()
 
 bool Node::Release()
 {
+	//Release Node Data, Object List
 	for (auto obj : ObjectList)
 	{
 		obj->Release();
@@ -50,6 +51,7 @@ bool Node::Release()
 }
 void Node::SetNode(DWORD lt, DWORD rt, DWORD lb, DWORD rb)
 {
+	//Set Node Data
 	LeftTop = lt;
 	RightTop = rt;
 	LeftBottom = lb;
@@ -71,6 +73,7 @@ void Node::SetData(ID3D11Device* device, std::vector<Vertex>& vt, int child, DWO
 
 void Node::SetIndexNBox()
 {
+	//Create IndexList , Node Collision Box
 	DWORD RowCellCount = (LeftBottom - LeftTop) / MapWidth;
 	DWORD ColCellCount = RightTop - LeftTop;
 	DWORD CellsCount = RowCellCount * ColCellCount;

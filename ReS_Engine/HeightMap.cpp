@@ -3,6 +3,7 @@
 #include "Object/Object3D.h"
 void HeightMap::SetMapSize(UINT width, UINT height, float cellDistance)
 {
+    //Init Map Data
     MapWidth = width + 1;
     MapHeight = height + 1;
     RowIndex = height;
@@ -13,6 +14,7 @@ void HeightMap::SetMapSize(UINT width, UINT height, float cellDistance)
 
 void HeightMap::SetMapSize(UINT width, UINT height)
 {
+    //Init Map Data
     MapWidth = width + 1;
     MapHeight = height + 1;
     RowIndex = height;
@@ -55,6 +57,7 @@ void HeightMap::SetIndexList()
 
 void HeightMap::CheckVisible(Frustum fr)
 {
+    // Check Render Obejct Use Camera Frustum
     GameCamera = fr;
     SpaceDivisionTree.DrawNode.clear();
     SpaceDivisionTree.SetFrustum(GameCamera);
@@ -65,9 +68,10 @@ void HeightMap::CheckVisible(Frustum fr)
 
 void HeightMap::GenVertexNorm()
 {
+    //Create Vertex Normal Vector
     FaceInfoList.resize(FaceCount);
     UINT face = 0;
-    for (UINT i = 0; i < IndexList.size(); i += 3)
+    for (UINT i = 0; i < IndexList.size(); i += 3) // loop Index
     {
         UINT i0 = IndexList[i + 0];
         UINT i1 = IndexList[i + 1];
@@ -98,15 +102,16 @@ void HeightMap::ComputeVertexNorm(UINT vertex)
 {
     for (UINT i = 0; i < VertexInfoList[vertex].FaceIndexArray.size(); i++)
     {
-        UINT faceIndex = VertexInfoList[vertex].FaceIndexArray[i];
+        UINT faceIndex = VertexInfoList[vertex].FaceIndexArray[i];// Get the face index
+        // Get the vertex indices for the face
         UINT i0 = FaceInfoList[faceIndex].VertexArray[0];
         UINT i1 = FaceInfoList[faceIndex].VertexArray[1];
         UINT i2 = FaceInfoList[faceIndex].VertexArray[2];
-        FaceInfoList[faceIndex].NormalVec = ComputeFaceNorm(i0, i1, i2);
+        FaceInfoList[faceIndex].NormalVec = ComputeFaceNorm(i0, i1, i2);// Calculate face normal
 
-        VertexInfoList[vertex].NormalVec += FaceInfoList[faceIndex].NormalVec;
+        VertexInfoList[vertex].NormalVec += FaceInfoList[faceIndex].NormalVec;// Add face normal to vertex normal
     }
-    D3DXVec3Normalize(&VertexInfoList[vertex].NormalVec, &VertexInfoList[vertex].NormalVec);
+    D3DXVec3Normalize(&VertexInfoList[vertex].NormalVec, &VertexInfoList[vertex].NormalVec);// Normalize the vertex normal
 
     VertexList[vertex].Normal = VertexInfoList[vertex].NormalVec;
 }
@@ -146,6 +151,7 @@ bool HeightMap::PreRender()
 
 bool HeightMap::CreateVertex()
 {
+    //Create Vertex and Init SpaceDivison
     BaseObject::CreateVertex();
     SpaceDivisionTree.SetData(D3D11Device, D3D11Context, VertexList);
 
@@ -159,24 +165,27 @@ bool HeightMap::LoadHeightMap(std::wstring HeightMapName)
     HRESULT hr;
     ID3D11Resource* Texture;
     hr = DirectX::CreateWICTextureFromFileEx(D3D11Device, D3D11Context, HeightMapName.c_str(), 0, D3D11_USAGE_STAGING, 0,
-        D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE, 0, WIC_LOADER_DEFAULT, &Texture, nullptr);
+        D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE, 0, WIC_LOADER_DEFAULT, &Texture, nullptr);// Load texture from file
     if (hr == S_FALSE)
     {
         return false;
     }
     ID3D11Texture2D* Texture2D = NULL;
-    if (FAILED(Texture->QueryInterface(__uuidof(ID3D11Texture2D), (LPVOID*)&Texture2D))) 
+    if (FAILED(Texture->QueryInterface(__uuidof(ID3D11Texture2D), (LPVOID*)&Texture2D))) // Query the texture interface
     {
         return false;
     }
+    // Get texture description
     D3D11_TEXTURE2D_DESC td;
     Texture2D->GetDesc(&td);
     HeightList.resize(td.Height * td.Width);
 
     D3D11_MAPPED_SUBRESOURCE MappedFaceDest;
+    // Map the texture resource
     if (SUCCEEDED(D3D11Context->Map(Texture2D, D3D11CalcSubresource(0, 0, 1), D3D11_MAP_READ, 0, &MappedFaceDest))) 
     {
         UCHAR* Texels = (UCHAR*)MappedFaceDest.pData;
+        // Read texture data into HeightList
         for (UINT row = 0; row < td.Height; row++) 
         {
             UINT rowStart = row * MappedFaceDest.RowPitch;
@@ -192,6 +201,7 @@ bool HeightMap::LoadHeightMap(std::wstring HeightMapName)
     else {
         return false;
     }
+    // Set map dimensions and other parameters
     MapWidth = td.Width;
     MapHeight = td.Height;
     RowIndex = td.Height - 1;
@@ -239,15 +249,19 @@ float HeightMap::GetMapHeight(int row, int col)
 
 float HeightMap::GetHeight(float posX, float posZ)
 {
+    // Calculate cell coordinates based on position
     float cellX = (float)(ColIndex * CellDistance / 2.0f + posX);
     float cellZ = (float)(RowIndex * CellDistance / 2.0f - posZ);
 
+    // Normalize cell coordinates
     cellX /= (float)CellDistance;
     cellZ /= (float)CellDistance;
 
+    // Get vertex indices for the cell
     float vertexCol = ::floorf(cellX);
     float vertexRow = ::floorf(cellZ);
 
+    // Clamp vertexCol and vertexRow within bounds
     if (vertexCol < 0.0f)
     {
         vertexCol = 0.0f;
@@ -264,12 +278,13 @@ float HeightMap::GetHeight(float posX, float posZ)
     {
         vertexRow = (float)(RowIndex - 2);
     }
-
+    // Get heights at the four corners of the cell
     float A = GetMapHeight((int)vertexRow, (int)vertexCol);
     float B = GetMapHeight((int)vertexRow, (int)vertexCol + 1);
     float C = GetMapHeight((int)vertexRow + 1, (int)vertexCol);
     float D = GetMapHeight((int)vertexRow + 1, (int)vertexCol + 1);
 
+    // Calculate deltas for interpolation
     float deltaX = cellX - vertexCol;
     float deltaZ = cellZ - vertexRow;
 
@@ -323,6 +338,7 @@ void HeightMap::UpdateMapObjPos(std::vector<Node*>& nodeList)
 HRESULT HeightMap::CraeteAlphaTexture(DWORD width, DWORD height)
 {
     HRESULT hr;
+    // Set texture properties
     D3D11_TEXTURE2D_DESC td;
     ZeroMemory(&td, sizeof(td));
     td.Width = width;
@@ -337,6 +353,7 @@ HRESULT HeightMap::CraeteAlphaTexture(DWORD width, DWORD height)
     td.CPUAccessFlags = 0;
     td.MiscFlags = 0;
 
+    // Allocate memory for alpha data
     AlphaData = new BYTE[width * height * 4];
 
     for (UINT y = 0; y < height; y++)
@@ -350,14 +367,17 @@ HRESULT HeightMap::CraeteAlphaTexture(DWORD width, DWORD height)
             pixel[3] = 0; //a
         }
     }
+    // Set up the initial data for the texture
     D3D11_SUBRESOURCE_DATA initData;
     initData.pSysMem = AlphaData;
     initData.SysMemPitch = sizeof(BYTE) * 4 * width;
     initData.SysMemSlicePitch = 0;
+    // Create the texture
     if (FAILED(hr = D3D11Device->CreateTexture2D(&td, &initData, &MaskAlphaTex)))
     {
         return hr;
     }
+    // Create the shader resource view for the texture
     if (FAILED(hr = D3D11Device->CreateShaderResourceView(MaskAlphaTex, NULL, &MaskAlphaTexSRV)))
     {
         return hr;
@@ -368,56 +388,57 @@ HRESULT HeightMap::CraeteAlphaTexture(DWORD width, DWORD height)
 void HeightMap::Splatting(Vector3 interSection, UINT splattiongTexIndex, float splattingRadius)
 {
     UINT splattingIndex = splattiongTexIndex;
-    UINT const DataSize = sizeof(BYTE) * 4;
-    UINT const RowPitch = DataSize * 1024;
+    UINT const DataSize = sizeof(BYTE) * 4;// Size of each pixel (RGBA)
+    UINT const RowPitch = DataSize * 1024;// Pitch of the texture data (width)
     UINT const DepthPitch = 0;
 
     Vector2 texIndex;
     Vector2 uv;
-    Vector2 maxSize = { (float)RowIndex / 2,(float)RowIndex / 2 };
+    Vector2 maxSize = { (float)RowIndex / 2,(float)RowIndex / 2 };// Max size for UV mapping
     UINT texSize = 1024;
     Vector3 texPos;
     Vector3 pickPos = interSection;
 
 
-    //splattingIndex = rand() % 4;
-
-    for (UINT y = 0; y < texSize; y++)
+  
+    for (UINT y = 0; y < texSize; y++) // Loop the texture
     {
         texIndex.y = y;
         for (UINT x = 0; x < texSize; x++)
         {
             texIndex.x = x;
-            uv = Vector2((texIndex.x / (float)texSize) * 2.0f - 1.0f, -(texIndex.y / (float)texSize * 2.0f - 1.0f));
+            uv = Vector2((texIndex.x / (float)texSize) * 2.0f - 1.0f, -(texIndex.y / (float)texSize * 2.0f - 1.0f)); // Calculate UV coordinates
 
-            texPos = Vector3(uv.x * maxSize.x, 0.0f, uv.y * maxSize.y);
-            BYTE* pixel = &AlphaData[texSize * y * 4 + x * 4];
+            texPos = Vector3(uv.x * maxSize.x, 0.0f, uv.y * maxSize.y);  // Calculate texture position
+            BYTE* pixel = &AlphaData[texSize * y * 4 + x * 4];// Get the pointer to the current pixel
             Vector3 temp = pickPos - texPos;
             float radius = D3DXVec3Length(&temp);
 
-            if (radius < splattingRadius)
+            if (radius < splattingRadius)// Check if the distance is within the splatting radius
             {
                 float dot = 1.0f - (radius / splattingRadius);
 
+                // Update the alpha channel based on splatting index
                 if (splattingIndex == 0 && (dot * 255) > pixel[0])
                 {
-                    pixel[0] = dot * 255;
+                    pixel[0] = dot * 255;// Update red channel
                 }
                 if (splattingIndex == 1 && (dot * 255) > pixel[1])
                 {
-                    pixel[1] = dot * 255;
+                    pixel[1] = dot * 255;// Update green channel
                 }
                 if (splattingIndex == 2 && (dot * 255) > pixel[2])
                 {
-                    pixel[2] = dot * 255;
+                    pixel[2] = dot * 255;// Update blue channel
                 }
                 if (splattingIndex == 3 && (dot * 255) > pixel[3])
                 {
-                    pixel[3] = dot * 255;
+                    pixel[3] = dot * 255;// Update alpha channel
                 }
             }
         }
     }
+    // Update the texture with modified alpha data
     D3D11Context->UpdateSubresource(MaskAlphaTex, 0, nullptr, AlphaData, RowPitch, DepthPitch);
 }
 

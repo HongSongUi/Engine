@@ -9,6 +9,7 @@
 
 struct Vertex
 {
+	// Manage Vertex information
 	Vector3 Position;
 	Vector3 Normal;
 	Vector4 Color;

@@ -47,7 +47,7 @@ void Object2D::UpdateVertexList()
 
 void Object2D::Hit(Object2D& HitObject , float Damage)
 {
-    //TODO 수정하기
+ 
 }
 
 
@@ -57,7 +57,7 @@ void Object2D::SetPosition(Vector2 pos)
 	Size.x = TextureRt.Size.x;
 	Size.y = TextureRt.Size.y;
 	ObjectRect.SetRect(WorldPos, Size);
-	//ObjectCir.SetCircle(_ObjectRt.Center, _ObjectRt.Size);
+
 }
 
 void Object2D::ScreenToNdc()

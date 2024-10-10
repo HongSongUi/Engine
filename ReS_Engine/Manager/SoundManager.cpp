@@ -3,6 +3,7 @@
 #include <tchar.h>
 bool SoundManager::Init()
 {
+	// init Fmod system
 	FMOD::System_Create(&FSystem);
 	FSystem->init(32, FMOD_INIT_NORMAL, 0);
 	return true;
@@ -16,6 +17,7 @@ bool SoundManager::Frame()
 
 bool SoundManager::Release()
 {
+	//Resource release
 	for (auto data : SoundList) 
 	{
 		if (data.second)
@@ -31,15 +33,16 @@ bool SoundManager::Release()
 
 GameSound* SoundManager::Load(std::wstring filename)
 {
+	//load Sound file use file name
 	FMOD_RESULT hr;
 	std::wstring name = GetSplitName(filename);
-	auto iter = SoundList.find(name);
-	if (iter != SoundList.end()) 
+	auto iter = SoundList.find(name); 
+	if (iter != SoundList.end()) //  find soundfile at list
 	{
 		return iter->second;
 	}
 	GameSound* NewData = new GameSound;
-	hr = NewData->Load(FSystem, filename);
+	hr = NewData->Load(FSystem, filename);//if there isn't file -> Load File
 	if (hr == FMOD_OK) 
 	{
 		SoundList.insert(std::make_pair(name, NewData));
@@ -49,6 +52,8 @@ GameSound* SoundManager::Load(std::wstring filename)
 
 GameSound* SoundManager::Find(std::wstring name)
 {
+	// just find function 
+	// not load
 	auto iter = SoundList.find(name);
 	if (iter != SoundList.end())
 	{
@@ -60,6 +65,7 @@ GameSound* SoundManager::Find(std::wstring name)
 
 void SoundManager::LoadDir(std::wstring path)
 {
+	// Load Directory Use path
 	std::wstring dirpath = path + L"*.*";
 	intptr_t handle;
 	struct _wfinddata_t data;
@@ -83,6 +89,7 @@ void SoundManager::LoadDir(std::wstring path)
 
 void SoundManager::LoadAll(std::wstring path)
 {
+	// Load all files in the directory
 	LoadDir(path);
 	for (auto& data : fileList)
 	{

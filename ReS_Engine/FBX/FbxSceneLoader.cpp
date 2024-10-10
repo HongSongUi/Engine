@@ -110,15 +110,15 @@ bool FbxSceneLoader::Load(std::wstring FileName)
 	LoadAnimation();
 
 	for (auto Obj : ObjList) {
-		if (Obj->ParentNode != nullptr) 
+		if (Obj->ParentNode != nullptr) // Check if the object has a parent node. 
 		{
-			auto data = ObjMap.find(Obj->ParentNode);
+			auto data = ObjMap.find(Obj->ParentNode);// Find the parent object in the object map using the parent nod
 			Obj->SetParent(data->second);
 		}
 	}
 	FindMashObjcet();
 
-	for (auto mesh : MeshList) 
+	for (auto mesh : MeshList) // Loop each mesh in the mesh list. 
 	{
 		FbxEntity* obj = MeshMap.find(mesh)->second;
 		ParseMesh(mesh, obj);
@@ -178,18 +178,21 @@ void FbxSceneLoader::PreProcess(FbxNode* Node)
 
 void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 {
-	obj->Skinned = ParseMeshSkinning(Mesh, obj);
+	obj->Skinned = ParseMeshSkinning(Mesh, obj);// Parse skinning information for the mesh and associate it with the object.
 	FbxNode* Node = Mesh->GetNode();
 	FbxAMatrix geom;
-	FbxVector4 trans = Node->GetGeometricTranslation(FbxNode::eSourcePivot);
 
+	//get information use mesh's node
+
+	FbxVector4 trans = Node->GetGeometricTranslation(FbxNode::eSourcePivot);
 	FbxVector4 rot = Node->GetGeometricRotation(FbxNode::eSourcePivot);
 	FbxVector4 scale = Node->GetGeometricScaling(FbxNode::eSourcePivot);
 	geom.SetT(trans);
 	geom.SetR(rot);
 	geom.SetS(scale);
 	FbxAMatrix normalLocalMatrix = geom;
-	//normal 행렬은 역행렬의 전치
+
+	// Invert and transpose the normal matrix
 	normalLocalMatrix = normalLocalMatrix.Inverse();
 	normalLocalMatrix = normalLocalMatrix.Transpose();
 
@@ -218,7 +221,7 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 	}
 	int MtrlCount = 0;
 
-	LoadTexture(Mesh, MtrlCount, obj);
+	LoadTexture(Mesh, MtrlCount, obj); // Load the texture in the mesh.
 
 	int PolyCount = Mesh->GetPolygonCount();
 
@@ -227,15 +230,16 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 	int SubMtrl = 0;
 	FbxVector4* VertexPos = Mesh->GetControlPoints();
 
-	for (int poly = 0; poly < PolyCount; poly++) 
+	for (int poly = 0; poly < PolyCount; poly++) // Loop each polygon in the mesh.
 	{
 		int PolySize = Mesh->GetPolygonSize(poly);	
 		FaceCount = PolySize - 2;					
 	
-		if (Material) {
+		if (Material) // If there are materials, get the sub-material index.
+		{
 			SubMtrl = GetSubMaterialIndex(poly, Material);
 		}
-		for (int face = 0; face < FaceCount; face++) 
+		for (int face = 0; face < FaceCount; face++) // Loop each face in the polygon.
 		{
 
 			int VertexColorArray[3] = { 0, face + 2, face + 1 };
@@ -249,7 +253,7 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 			iUVIndex[0] = Mesh->GetTextureUVIndex(poly, 0);
 			iUVIndex[1] = Mesh->GetTextureUVIndex(poly, face + 2);
 			iUVIndex[2] = Mesh->GetTextureUVIndex(poly, face + 1);
-			for (int index = 0; index < 3; index++) 
+			for (int index = 0; index < 3; index++) // Loop each vertex in the face.
 			{
 				int vertexID = CornerIndex[index];
 
@@ -257,12 +261,12 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 
 				Vertex tmp;
 				IW_VERTEX IwVertex;
-				FbxVector4 vTmp = geom.MultT(ver);
+				FbxVector4 vTmp = geom.MultT(ver);// Apply the geometric transformation to the vertex position.
 				tmp.Position.x = vTmp.mData[0];
 				tmp.Position.y = vTmp.mData[2];
 				tmp.Position.z = vTmp.mData[1];
 				tmp.Color = { 1,1,1,1 };
-				if (VertexColor) 
+				if (VertexColor)  // If vertex colors exist, read the color for the vertex.
 				{
 					FbxColor F_Color = ReadColor(Mesh, VertexColor, CornerIndex[index], BasePolyIndex + VertexColorArray[index]);
 					tmp.Color.x = F_Color.mRed;
@@ -270,13 +274,13 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 					tmp.Color.z = F_Color.mBlue;
 					tmp.Color.w = 1.0f;
 				}
-				if (VertexUVSet)
+				if (VertexUVSet)// If UVs exist, read the texture coordinates for the vertex.
 				{
 					FbxVector2 t = ReadTextureCoord(Mesh, VertexUVSet, CornerIndex[index], iUVIndex[index]);
 					tmp.Texture.x = t.mData[0];
 					tmp.Texture.y = 1.0f - t.mData[1];
 				}
-				if (VertexNormalSet)
+				if (VertexNormalSet)// If normals exist, read the normal for the vertex and apply the normal transformation.
 				{
 					FbxVector4 n = ReadNormal(Mesh, VertexNormalSet, CornerIndex[index], BasePolyIndex + VertexColorArray[index]);
 					n = normalLocalMatrix.MultT(n);
@@ -284,7 +288,8 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 					tmp.Normal.y = n.mData[1];
 					tmp.Normal.z = n.mData[2];
 				}
-				if (obj->Skinned == false) {
+				if (obj->Skinned == false) // If the object is not skinned, set default weights and indices.
+				{
 					IwVertex.Index.x = ObjectIDMap.find(Node)->second;
 					IwVertex.Index.y = 0;
 					IwVertex.Index.z = 0;
@@ -294,7 +299,8 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 					IwVertex.weight.z = 0.0f;
 					IwVertex.weight.w = 0.0f;
 				}
-				else {
+				else  // For skinned objects, use the bone weights and indices.
+				{
 					BoneWeight* weight = &obj->WeightList[vertexID];
 					IwVertex.Index.x = weight->Index[0];
 					IwVertex.Index.y = weight->Index[1];
@@ -305,11 +311,13 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 					IwVertex.weight.z = weight->Weight[2];
 					IwVertex.weight.w = weight->Weight[3];
 				}
-				if (MtrlCount <= 1) {
+				if (MtrlCount <= 1) // If there's only one material, add the vertex to the main list.
+				{
 					obj->VertexList.push_back(tmp);
 					obj->IWVertexList.push_back(IwVertex);
 				}
-				else {
+				else// For multiple materials, add the vertex to the respective sub-lists.
+				{
 					obj->SubVertexList[SubMtrl].push_back(tmp);
 					obj->SubIWVertexList[SubMtrl].push_back(IwVertex);
 				}
@@ -322,10 +330,10 @@ void FbxSceneLoader::ParseMesh(FbxMesh* Mesh, FbxEntity* obj)
 
 FbxColor FbxSceneLoader::ReadColor(FbxMesh* Mesh, FbxLayerElementVertexColor* VertexColor, int posIndex, int colorIndex)
 {
-	FbxColor color = { 1,1,1,1 };
-	FbxLayerElement::EMappingMode mode = VertexColor->GetMappingMode();
+	FbxColor color = { 1,1,1,1 };// Initialize color to white (RGBA: 1, 1, 1, 1)
+	FbxLayerElement::EMappingMode mode = VertexColor->GetMappingMode();// Get the mapping mode for the vertex colors.
 
-	switch (mode)
+	switch (mode)// Switch statement to handle different mapping modes.
 	{
 	case FbxLayerElementUV::eByControlPoint:
 		switch (VertexColor->GetReferenceMode()) 
@@ -357,10 +365,11 @@ FbxColor FbxSceneLoader::ReadColor(FbxMesh* Mesh, FbxLayerElementVertexColor* Ve
 	return color;
 }
 
+// Function to read texture coordinates from a mesh using the specified UV set
 FbxVector2 FbxSceneLoader::ReadTextureCoord(FbxMesh* Mesh, FbxLayerElementUV* UVSet, int vertexIndex, int uvIndex)
 {
 	FbxVector2 fbx_vector;
-	FbxLayerElement::EMappingMode mode = UVSet->GetMappingMode();
+	FbxLayerElement::EMappingMode mode = UVSet->GetMappingMode();// Get the mapping mode for the UV set
 	switch (mode)
 	{
 	case FbxLayerElementUV::eByControlPoint:
@@ -392,11 +401,11 @@ FbxVector2 FbxSceneLoader::ReadTextureCoord(FbxMesh* Mesh, FbxLayerElementUV* UV
 	}
 	return fbx_vector;
 }
-
+// Function to read vertex normals from a mesh using the specified normal set
 FbxVector4 FbxSceneLoader::ReadNormal(FbxMesh* Mesh, FbxLayerElementNormal* VertexNor, int posIndex, int colorIndex)
 {
 	FbxVector4 nor(1, 1, 1, 1);
-	FbxLayerElement::EMappingMode mode = VertexNor->GetMappingMode();
+	FbxLayerElement::EMappingMode mode = VertexNor->GetMappingMode();// Get the mapping mode for the vertex normal set
 	switch (mode) {
 	case FbxLayerElementUV::eByControlPoint:
 		switch (VertexNor->GetReferenceMode()) {
@@ -426,8 +435,8 @@ FbxVector4 FbxSceneLoader::ReadNormal(FbxMesh* Mesh, FbxLayerElementNormal* Vert
 
 void FbxSceneLoader::LoadTexture(FbxMesh* Mesh, int& count, FbxEntity* Obj)
 {
-	FbxNode* node = Mesh->GetNode();
-	int MaterialCount = node->GetMaterialCount();
+	FbxNode* node = Mesh->GetNode(); // Get the node associated with the mesh
+	int MaterialCount = node->GetMaterialCount(); 
 	count = MaterialCount;
 
 	std::wstring FileName;
@@ -435,7 +444,8 @@ void FbxSceneLoader::LoadTexture(FbxMesh* Mesh, int& count, FbxEntity* Obj)
 	Obj->TextureFileList.resize(MaterialCount);
 	TextureFullPath.resize(MaterialCount);
 
-	for (int i = 0; i < MaterialCount; i++) {
+	for (int i = 0; i < MaterialCount; i++) // Loop each material to retrieve its texture file
+	{
 		FbxSurfaceMaterial* Surface = node->GetMaterial(i);
 		if (Surface) {
 			auto prop = Surface->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -516,7 +526,7 @@ void FbxSceneLoader::FindMashObjcet()
 {
 	for (auto obj : ObjList) 
 	{
-		FbxMesh* mesh = obj->Node->GetMesh();
+		FbxMesh* mesh = obj->Node->GetMesh();// Get the mesh use current object's node. 
 		if (mesh) 
 		{
 			MeshMap.insert(std::make_pair(mesh, obj));
@@ -527,13 +537,14 @@ void FbxSceneLoader::FindMashObjcet()
 
 void FbxSceneLoader::LoadAnimation()
 {
-	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);
-	FbxAnimStack* stack = Scene->GetSrcObject<FbxAnimStack>(0);
+	FbxTime::SetGlobalTimeMode(FbxTime::eFrames30);// Set the global time mode to 30 frames per second. 
+	FbxAnimStack* stack = Scene->GetSrcObject<FbxAnimStack>(0); // Retrieve the first animation stack from the scene. 
 
 	if (stack == nullptr)
 	{
 		return;
 	}
+	//get Animation informations
 	FbxString TakeName = stack->GetName();
 	FbxTakeInfo* TakeInfo = Scene->GetTakeInfo(TakeName);
 	FbxTimeSpan LocalTimeSpan = TakeInfo->mLocalTimeSpan;
@@ -552,7 +563,7 @@ void FbxSceneLoader::LoadAnimation()
 	FbxTime time;
 	AnimTrack Track;
 
-	for (FbxLongLong t = s; t <= n; t++) 
+	for (FbxLongLong t = s; t <= n; t++)    // Iterate through each frame in the animation. 
 	{
 		time.SetFrame(t, TimeMode);
 		for (int obj = 0; obj < ObjList.size(); obj++) {
@@ -629,38 +640,39 @@ bool FbxSceneLoader::ParseMeshSkinning(FbxMesh* mesh, FbxEntity* Obj)
 
 bool FbxSceneLoader::UpdateFrame(ID3D11DeviceContext* context)
 {
+	// Update the animation frame based on the time elapsed and animation speed 
+
 	AnimFrame = AnimFrame + gSecondPerFrame * AnimSpeed * AnimScene.FrameSpeed * AnimInverse;
 	if (AnimFrame > AnimScene.EndFrame ||
 		AnimFrame < AnimScene.StartFrame)
 	{
 		AnimFrame = min(AnimFrame, AnimScene.EndFrame);
 		AnimFrame = max(AnimFrame, AnimScene.StartFrame);
-		AnimInverse *= -1.0f;
+		AnimInverse *= -1.0f;// Reverse the animation direction if out of bounds
 	}
 	std::vector<Matrix> matCurrentAnimList;
-	for (int Bone = 0; Bone < ObjList.size(); Bone++) 
+	for (int Bone = 0; Bone < ObjList.size(); Bone++)  // Interpolate animation matrices for each bone
 	{
-		Matrix AniMat = ObjList[Bone]->Interplate(this, AnimFrame);
-		D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &AniMat);
-		matCurrentAnimList.push_back(AniMat);
+		Matrix AniMat = ObjList[Bone]->Interplate(this, AnimFrame);// Get the interpolated matrix for the current bone
+		D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &AniMat);// Transpose the matrix and store it in BoneData 
+		matCurrentAnimList.push_back(AniMat); // Add the animated matrix to the list
 	}
 	context->UpdateSubresource(BoneCB, 0, nullptr, &BoneData, 0, 0);
 
-	for (int Draw = 0; Draw < DrawObjList.size(); Draw++) 
+	for (int Draw = 0; Draw < DrawObjList.size(); Draw++)  // Loop each drawable object
 	{
-
+		// Check if the drawable object has a bind pose map name
 		if (DrawObjList[Draw]->MatrixBindPoseMapName.size()) 
 		{
-
 			for (int Bone = 0; Bone < ObjList.size(); Bone++) 
 			{
-				std::wstring name = ObjList[Bone]->Name;
-				auto iter = DrawObjList[Draw]->MatrixBindPoseMapName.find(name);
-				if (iter != DrawObjList[Draw]->MatrixBindPoseMapName.end()) 
+				std::wstring name = ObjList[Bone]->Name;// Get the bone name 
+				auto iter = DrawObjList[Draw]->MatrixBindPoseMapName.find(name);// Find the bone in the bind pose map
+				if (iter != DrawObjList[Draw]->MatrixBindPoseMapName.end()) // If the bone is found in the map
 				{
-					Matrix matBind = iter->second;
-					Matrix matAni = matBind * matCurrentAnimList[Bone];
-					D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &matAni);
+					Matrix matBind = iter->second;// Get the bind matrix 
+					Matrix matAni = matBind * matCurrentAnimList[Bone]; // Calculate the animated matrix by multiplying the bind and current animation matrices
+					D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &matAni); // Transpose and store the final animated matrix in BoneData
 				}
 			}
 			context->UpdateSubresource(DrawObjList[Draw]->ObjMesh.SkinBoneCB, 0, nullptr, &BoneData, 0, 0);

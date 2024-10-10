@@ -2,21 +2,23 @@
 #include <tchar.h>
 void TextureManager::InitMgr(ID3D11Device* Device, ID3D11DeviceContext* Context)
 {
+	//init device, context
     D3D11Device = Device;
     D3D11Context = Context;
 }
 
 Texture* TextureManager::Load(std::wstring name)
 {
+	//Load texture file , use file name
 	HRESULT hr;
 
-	auto iter = TextureList.find(name);
-	if (iter != TextureList.end()) 
+	auto iter = TextureList.find(name); 
+	if (iter != TextureList.end()) //if find file
 	{
-		return iter->second;
+		return iter->second; // return file
 	}
 	Texture* NewData = new Texture;
-	hr = NewData->Load(D3D11Device, D3D11Context, name);
+	hr = NewData->Load(D3D11Device, D3D11Context, name); // if there isn't file -> Load texture file
 	if (hr == S_OK) 
 	{
 		TextureList.insert(std::make_pair(name, NewData));

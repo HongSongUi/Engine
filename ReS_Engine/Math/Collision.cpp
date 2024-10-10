@@ -6,12 +6,12 @@ Rect::Rect()
 }
 Rect::Rect(Vector2 cen, Vector2 size)
 {
-	SetRect(cen, size);
+	SetRect(cen, size); // Create Rect use center vector and size vector
 }
 
 Rect::Rect(float left, float top, float right, float bottom)
 {
-	SetRect(left, top, right, bottom);
+	SetRect(left, top, right, bottom);// Create Rect use left, top, right, bottom
 }
 
 void Rect::SetRect(Vector2 cen, Vector2 size)
@@ -36,7 +36,7 @@ void Rect::SetRect(float left, float top, float right, float bottom)
 
 bool Rect::operator==(Rect& r)
 {
-	if (fabs(Min.x - r.Min.x) < CalcEpsilon)
+	if (fabs(Min.x - r.Min.x) < CalcEpsilon) //Judging that it's the same if it's less than epsilon
 	{
 		if (fabs(Min.y - r.Min.y) < CalcEpsilon)
 		{
@@ -58,7 +58,8 @@ Sphere::Sphere()
 
 Sphere::Sphere(Vector3 cen, float rad)
 {
-	Center = cen;
+	// Set Sphere value
+	Center = cen; 
 	Radius = rad;
 }
 
@@ -76,9 +77,9 @@ void Box::SetBox(Vector3 max, Vector3 min)
 	Max = max;
 	Min = min;
 	Center = (Max + Min) * 0.5f;
-	Axis[0] = { 1,0,0 };
-	Axis[1] = { 0,1,0 };
-	Axis[2] = { 0,0,1 };
+	Axis[0] = { 1,0,0 }; //x
+	Axis[1] = { 0,1,0 }; //y
+	Axis[2] = { 0,0,1 }; //z
 	Extent[0] = Max.x - Center.x;
 	Extent[1] = Max.y - Center.y;
 	Extent[2] = Max.z - Center.z;
@@ -97,30 +98,34 @@ bool Collision::RectToRect(Rect& a, Rect& b)
 	float MaxX;
 	float MaxY;
 
+	// Calculate the min and max coordinates for the overlapping area
 	MinX = a.Min.x > b.Min.x ? b.Min.x : a.Min.x;
 	MinY = a.Min.y > b.Min.y ? b.Min.y : a.Min.y;
 	MaxX = a.Max.x > b.Max.x ? a.Max.x : b.Max.x;
 	MaxY = a.Max.y > b.Max.y ? a.Max.y : b.Max.y;
 
+	// Check for X overlap
 	if ((a.Size.x + b.Size.x) >= (MaxX - MinX)) 
 	{
+		// Check for Y overlap
 		if ((a.Size.y + b.Size.y) >= (MaxY - MinY)) 
 		{
-			Rect tmp;
+			Rect tmp;// Temporary Rect for overlap 
 			float x1, y1, x2, y2;
+			// Determine corners of the overlapping area
 			x1 = a.Min.x > b.Min.x ? a.Min.x : b.Min.x;
 			y1 = a.Min.y > b.Min.y ? a.Min.y : b.Min.y;
 			x2 = a.Max.x > b.Max.x ? b.Max.x : a.Max.x;
 			y2 = a.Max.y > b.Max.y ? b.Max.y : a.Max.y;
-			tmp.SetRect(x1, y1, x2, y2);
-			if (tmp == a || tmp == b)
+			tmp.SetRect(x1, y1, x2, y2);// Set temporary rectangle
+			if (tmp == a || tmp == b)// Check if the overlap is exactly one of the rectangles
 			{
-				return true;
+				return true; // Return true for exact overlap
 			}
-			return true;
+			return true;// Return true for any overlap
 		} 
 	}
-	return false;
+	return false;// Return false if no overlap
 }
 
 HCollisionType Collision::BoxToBox(Box& a, Box& b)
@@ -128,6 +133,7 @@ HCollisionType Collision::BoxToBox(Box& a, Box& b)
 	float fMinX;    float fMaxX;
 	float fMinY;    float fMaxY;
 	float fMinZ;    float fMaxZ;
+	// Calculate the min and max coordinates for the overlap
 	fMinX = a.Min.x < b.Min.x ? a.Min.x : b.Min.x;
 	fMinY = a.Min.y < b.Min.y ? a.Min.y : b.Min.y;
 	fMaxX = a.Max.x > b.Max.x ? a.Max.x : b.Max.x;
@@ -136,29 +142,34 @@ HCollisionType Collision::BoxToBox(Box& a, Box& b)
 	fMinZ = a.Min.z < b.Min.z ? a.Min.z : b.Min.z;
 	fMaxZ = a.Max.z > b.Max.z ? a.Max.z : b.Max.z;
 
-	Vector3 vSize;
+	Vector3 vSize;// Size of the combined boxes
 	vSize.x = (a.Max.x - a.Min.x) + (b.Max.x - b.Min.x);
 	vSize.y = (a.Max.y - a.Min.y) + (b.Max.y - b.Min.y);
 	vSize.z = (a.Max.z - a.Min.z) + (b.Max.z - b.Min.z);
 
-	//  가로 판정
+	//  Check for horizontal overlap
 	if (vSize.x >= (fMaxX - fMinX))
-	{        //  세로 판정
+	{
+		// Check for vertical overlap
 		if (vSize.y >= (fMaxY - fMinY))
 		{
+			// Check for depth overlap 
 			if (vSize.z >= (fMaxZ - fMinZ))
 			{
-				// 교차한다. 교집합
+				// There is an intersection
 				Vector3 vMin, vMax;
-				Box Intersect;
+				Box Intersect; // Intersection box 
+				// Calculate the minimum corner of the intersection
 				vMin.x = a.Min.x > b.Min.x ? a.Min.x : b.Min.x;
 				vMin.y = a.Min.y > b.Min.y ? a.Min.y : b.Min.y;
 				vMin.z = a.Min.z > b.Min.z ? a.Min.z : b.Min.z;
 
+				// Calculate the maximum corner of the intersection
 				vMax.x = a.Max.x < b.Max.x ? a.Max.x : b.Max.x;
 				vMax.y = a.Max.y < b.Max.y ? a.Max.y : b.Max.y;
 				vMax.z = a.Max.z < b.Max.z ? a.Max.z : b.Max.z;
 
+				// Check if one box is completely inside the other
 				if (BoxToInBox(a, b))
 				{
 					return HCollisionType::RECT_IN;
