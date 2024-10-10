@@ -2,30 +2,29 @@
 #include "../Utility/Input.h"
 void DebugCamera::CreateViewMatrix(Vector3 pos, Vector3 target, Vector3 up)
 {
-	// «Ó«å?ú¼ÖªªÎíÂà÷: «««á«éªÎêÈöÇ¡¢ñ¼ãÊïÃ¡¢ß¾Û°ú¾«Ù«¯«È«ëªòàâïÒ
+	// Create View Matrix: Set Camera Location, Target, Upward Vector
     Position = pos; 
     Target = target; 
     UpVec = up; 
     
-    Pitch = Target.y; // YõîªòĞññŞªËª·ª¿üŞ?ÊÇÓøªòàâïÒ («Ô«Ã«Á)
+    Pitch = Target.y; //Set Y-axis rotation angle (pitch)
 
-    D3DXMatrixLookAtLH(&ViewMat, &Position, &Target, &UpVec); //«Ó«å?ú¼ÖªªÎíÂà÷
-    Update();// àâïÒªµªìª¿ö·ªÇ«««á«éªòÌÚãæ
+    D3DXMatrixLookAtLH(&ViewMat, &Position, &Target, &UpVec); //Creating a View Matrix 
+    Update();// Update camera with set value
 }
 
 void DebugCamera::CreateProjMatrix(float n, float f, float FoVy, float aspect)
 {
-	// ŞÒç¯ú¼ÖªªÎíÂà÷: ĞÎ«¯«ê«Ã«×Øü¡¢êÀ«¯«ê«Ã«×Øü¡¢?Øüİïáã(FoV¡¢«¢«¹«Ú«¯«Èİï)ªòàâïÒ
+	// Create projection matrix: Set near clip, far clip, and screen ratio (FoV, aspect ratio)
     Near = n;
     Far = f;
     Fov = FoVy;
     Aspect = aspect;
-    D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far); //ŞÒç¯ú¼ÖªªÎíÂà÷
+    D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far); //Creating a Projection Matrix
 }
 
 void DebugCamera::UpdateProjMatrix(float aspect)
 {
-	// «¢«¹«Ú«¯«ÈİïªÎÌÚãæ
     Aspect = aspect;
     D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far);
 }
@@ -67,7 +66,7 @@ bool DebugCamera::Frame()
 		}
 	}
 
-	// «««á«éªÎêÈöÇ«Ù«¯«È«ëªòÌÚãæ
+	// Update camera position vector
 
 	Vector3 p;
 	p.x = Position.x;
@@ -85,7 +84,7 @@ bool DebugCamera::Frame()
 
 	Update();
 
-	// «Ó«å?ú¼ÖªªÈŞÒç¯ú¼ÖªªòŞÅªÃªÆ«««á«éªÎ«Õ«é«¹«¿«àªòíÂà÷
+	// Create camera flustam using view matrix and projection matrix
 	CameraFrustum.CreateFrustum(&ViewMat, &ProjMat);
 
     return true;
