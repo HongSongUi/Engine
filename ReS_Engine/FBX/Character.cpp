@@ -2,6 +2,7 @@
 #include "FbxObjMesh.h"
 void Character::SetDevice(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+	//device, context variable setting
 	D3D11Device = device;
 	D3D11Context = context;
 }
@@ -39,69 +40,80 @@ HRESULT Character::CreateConstantBuffer()
 
 bool Character::UpdateFrame()
 {
+	//Vector to store the current animation matrix list
 	std::vector<Matrix> matCurrentAnimList;
-	AniFrame = AniFrame + gSecondPerFrame * AniSpeed * AnimScene.FrameSpeed;
+	AniFrame = AniFrame + gSecondPerFrame * AniSpeed * AnimScene.FrameSpeed;// Update the animation frame.
+
+	// Check if the animation frame is within the valid range.
 	if (AniFrame > ActionCurrent.EndFrame ||
 		AniFrame < ActionCurrent.StartFrame)
 	{
 		AniFrame = min(AniFrame, ActionCurrent.EndFrame);
 		AniFrame = max(AniFrame, ActionCurrent.StartFrame);
 	}
-	if (ActionCurrent.Loop) {
-		if (AniFrame >= ActionCurrent.EndFrame) {
-			AniFrame = ActionCurrent.StartFrame;
-		}
-	}
-	else {
-		if (AniFrame >= ActionCurrent.EndFrame) {
-			AniFrame = ActionCurrent.StartFrame;
-		}
-	}
-	if (AnionFbxFile) {
-
-		for (int Bone = 0; Bone < AnionFbxFile->ObjList.size(); Bone++) {
-			Matrix AniMat = AnionFbxFile->ObjList[Bone]->Interplate(FbxFile, AniFrame);
-			D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &AniMat);
-			matCurrentAnimList.push_back(AniMat);
-		}
-		D3D11Context->UpdateSubresource(FbxFile->BoneCB, 0, nullptr, &BoneData, 0, 0);
-		for (int Draw = 0; Draw < FbxFile->DrawObjList.size(); Draw++) 
+	if (ActionCurrent.Loop)
+	{
+		// Reset the animation frame to the start frame if it reaches the end frame.
+		if (AniFrame >= ActionCurrent.EndFrame) 
 		{
+			AniFrame = ActionCurrent.StartFrame;
+		}
+	}
+	else 
+	{
+		if (AniFrame >= ActionCurrent.EndFrame) 
+		{
+			AniFrame = ActionCurrent.StartFrame;
+		}
+	}
+	// Check if the FBX file has animation.
+	if (AnionFbxFile) 
+	{
+		for (int Bone = 0; Bone < AnionFbxFile->ObjList.size(); Bone++) // Interpolate the animation matrix for each bone.
+		{
+			Matrix AniMat = AnionFbxFile->ObjList[Bone]->Interplate(FbxFile, AniFrame);
+			// Store the interpolated animation matrix in the bone data.
+			D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &AniMat);
+			matCurrentAnimList.push_back(AniMat); // Add to the current animation list
+		}
+		D3D11Context->UpdateSubresource(FbxFile->BoneCB, 0, nullptr, &BoneData, 0, 0); // Update the subresource for the bone data.
 
+		for (int Draw = 0; Draw < FbxFile->DrawObjList.size(); Draw++) // Check for bind pose map in each draw object.
+		{
 			if (FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.size()) 
 			{
-
-				for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) {
+				// Combine the bind pose and animation matrices for each bone.
+				for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) 
+				{
 					std::wstring name = FbxFile->ObjList[Bone]->Name;
 					auto iter = FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.find(name);
 					if (iter != FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.end())
 					{
-						Matrix matBind = iter->second;
-						Matrix matAni = matBind * matCurrentAnimList[Bone];
-						D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &matAni);
+						Matrix matBind = iter->second; // Retrieve the bind pose matrix.
+						Matrix matAni = matBind * matCurrentAnimList[Bone]; // Combine with the animation matrix.
+						D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &matAni); // Store the result in bone data.
 					}
 				}
 				D3D11Context->UpdateSubresource(FbxFile->DrawObjList[Draw]->ObjMesh.SkinBoneCB, 0, nullptr, &BoneData, 0, 0);
 			}
 		}
 	}
-	//	_AnionFbxFile->UpdateSkeleton(_Context, _AniFrame, _BoneData);
-	//	_FbxFile->UpdateSkinning(_Context, _BoneData, _DrawGeom);
-	//}
-	else {
-		//	_FbxFile->UpdateSkeleton(_Context, _AniFrame, _BoneData);
-		//	_FbxFile->UpdateSkinning(_Context, _BoneData, _DrawGeom);
-		for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) {
+	else  // Perform default animation update if the FBX file has no animation.
+	{
+		for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) 
+		{
 			Matrix AniMat = FbxFile->ObjList[Bone]->Interplate(FbxFile, AniFrame);
 			D3DXMatrixTranspose(&BoneData.BoneMat[Bone], &AniMat);
-			matCurrentAnimList.push_back(AniMat);
+			matCurrentAnimList.push_back(AniMat);// Add to the current animation list.
 		}
 		D3D11Context->UpdateSubresource(FbxFile->BoneCB, 0, nullptr, &BoneData, 0, 0);
-		for (int Draw = 0; Draw < FbxFile->DrawObjList.size(); Draw++) {
+		for (int Draw = 0; Draw < FbxFile->DrawObjList.size(); Draw++) // Check for bind pose map in each draw object.
+		{
+			if (FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.size()) 
+			{
 
-			if (FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.size()) {
-
-				for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) {
+				for (int Bone = 0; Bone < FbxFile->ObjList.size(); Bone++) 
+				{
 					std::wstring name = FbxFile->ObjList[Bone]->Name;
 					auto iter = FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.find(name);
 					if (iter != FbxFile->DrawObjList[Draw]->MatrixBindPoseMapName.end()) 
@@ -115,15 +127,6 @@ bool Character::UpdateFrame()
 			}
 		}
 	}
-	/*for (int bone = 0; bone < _SkinBoneBuffer.size(); bone++) {
-
-		_Context->UpdateSubresource(_SkinBoneBuffer[bone], 0, nullptr, &_DrawGeom[bone], 0, 0);
-	}
-	for (int bone = 0; bone < _FbxFile->_ObjList.size(); bone++) {
-		D3DXMatrixTranspose(&_BoneData._BoneMat[bone], &_BoneData._BoneMat[bone]);
-	}
-	_Context->UpdateSubresource(_AniBoneBuffer, 0, nullptr, &_BoneData, 0, 0);*/
-
 	return true;
 }
 
@@ -144,14 +147,14 @@ void Character::SetMatrix(Matrix* world, Matrix* view, Matrix* proj)
 
 bool Character::Render()
 {
-	D3D11Context->VSSetConstantBuffers(1, 1, &AniBoneBuffer);
+	D3D11Context->VSSetConstantBuffers(1, 1, &AniBoneBuffer);// Set the animation bone buffer for the vertex shader.
 	for (int mesh = 0; mesh < FbxFile->DrawObjList.size(); mesh++) 
 	{
-		if (FbxFile->DrawObjList[mesh]->Skinned) 
+		if (FbxFile->DrawObjList[mesh]->Skinned) // Check if the current drawable object is skinned.
 		{
 			D3D11Context->VSSetConstantBuffers(1, 1, &SkinBoneBuffer[mesh]);
 		}
-		FbxFile->DrawObjList[mesh]->SetMatrix(&WorldMat, &ViewMat, &ProjMat);
+		FbxFile->DrawObjList[mesh]->SetMatrix(&WorldMat, &ViewMat, &ProjMat);// Set the world, view, and projection matrices for the current drawable object.
 		FbxFile->DrawObjList[mesh]->Render();
 	}
 	return true;
@@ -170,15 +173,16 @@ bool Character::Release()
 
 void Character::SetCharacter(FbxSceneLoader* fbxFile, Vector3 pos)
 {
-	FbxFile = fbxFile;
+	FbxFile = fbxFile;  // Assign the provided FBX file to the class member.
 
-	Position = pos;
+	Position = pos; // Set the character's position in the 3D space.
 
-	Scale = { 0.05f,0.05f,0.05f };
-	CreateConstantBuffer();
-	SetTransform(&Position, &Scale, nullptr);
+	Scale = { 0.05f,0.05f,0.05f }; // Set the character's scale.
+	CreateConstantBuffer(); // Create the constant buffer used for rendering.
+	SetTransform(&Position, &Scale, nullptr); // Set the transformation matrices for the character based on position and scale.
 
-	SetObjBox();
+	SetObjBox();    // Initialize the object's bounding box based on its current parameters.
+
 }
 
 void Character::SetTransform(Vector3* pos, Vector3* scale, Vector3* rot)

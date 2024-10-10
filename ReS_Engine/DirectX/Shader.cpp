@@ -17,6 +17,7 @@ bool Shader::Render()
 
 bool Shader::Release()
 {
+	//Resource Release
 	if (VsCode) VsCode->Release();
 	if (PsCode) PsCode->Release();
 	if (VertexShader) VertexShader->Release();
@@ -26,6 +27,7 @@ bool Shader::Release()
 
 HRESULT Shader::Load(std::wstring FileName, ID3D11Device* Device)
 {
+	//«Õ«¡«¤«ëÙ£ªÇshader load
 	HRESULT hr;
 	ID3DBlob* ErrorCode = nullptr;
 	hr = D3DCompileFromFile(FileName.c_str(), NULL, NULL, "VS", "vs_5_0", 0, 0, &VsCode, &ErrorCode);

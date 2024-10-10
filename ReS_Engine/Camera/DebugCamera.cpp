@@ -2,27 +2,30 @@
 #include "../Utility/Input.h"
 void DebugCamera::CreateViewMatrix(Vector3 pos, Vector3 target, Vector3 up)
 {
-    Position = pos;
-    Target = target;
-    UpVec = up;
+	// «Ó«å?ú¼ÖªªÎíÂà÷: «««á«éªÎêÈöÇ¡¢ñ¼ãÊïÃ¡¢ß¾Û°ú¾«Ù«¯«È«ëªòàâïÒ
+    Position = pos; 
+    Target = target; 
+    UpVec = up; 
     
-    Pitch = Target.y;
+    Pitch = Target.y; // YõîªòĞññŞªËª·ª¿üŞ?ÊÇÓøªòàâïÒ («Ô«Ã«Á)
 
-    D3DXMatrixLookAtLH(&ViewMat, &Position, &Target, &UpVec);
-    Update();
+    D3DXMatrixLookAtLH(&ViewMat, &Position, &Target, &UpVec); //«Ó«å?ú¼ÖªªÎíÂà÷
+    Update();// àâïÒªµªìª¿ö·ªÇ«««á«éªòÌÚãæ
 }
 
 void DebugCamera::CreateProjMatrix(float n, float f, float FoVy, float aspect)
 {
+	// ŞÒç¯ú¼ÖªªÎíÂà÷: ĞÎ«¯«ê«Ã«×Øü¡¢êÀ«¯«ê«Ã«×Øü¡¢?Øüİïáã(FoV¡¢«¢«¹«Ú«¯«Èİï)ªòàâïÒ
     Near = n;
     Far = f;
     Fov = FoVy;
     Aspect = aspect;
-    D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far);
+    D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far); //ŞÒç¯ú¼ÖªªÎíÂà÷
 }
 
 void DebugCamera::UpdateProjMatrix(float aspect)
 {
+	// «¢«¹«Ú«¯«ÈİïªÎÌÚãæ
     Aspect = aspect;
     D3DXMatrixPerspectiveFovLH(&ProjMat, Fov, Aspect, Near, Far);
 }
@@ -63,6 +66,9 @@ bool DebugCamera::Frame()
 			Position = Position + v;
 		}
 	}
+
+	// «««á«éªÎêÈöÇ«Ù«¯«È«ëªòÌÚãæ
+
 	Vector3 p;
 	p.x = Position.x;
 	p.y = Position.y;
@@ -77,8 +83,9 @@ bool DebugCamera::Frame()
 	D3DXMatrixInverse(&matView, NULL, &matWorld);
 	ViewMat = matView;
 
-	//_ViewMat.ViewLookAt(_Pos, _Target, _Up);
 	Update();
+
+	// «Ó«å?ú¼ÖªªÈŞÒç¯ú¼ÖªªòŞÅªÃªÆ«««á«éªÎ«Õ«é«¹«¿«àªòíÂà÷
 	CameraFrustum.CreateFrustum(&ViewMat, &ProjMat);
 
     return true;

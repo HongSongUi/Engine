@@ -5,6 +5,7 @@
 
 bool FbxSceneLoader::Init()
 {
+	// Create Fbx Scene, Manager, Importer
 	Manager = FbxManager::Create();
 	Importer = FbxImporter::Create(Manager, "");
 	Scene = FbxScene::Create(Manager, "");
@@ -24,6 +25,7 @@ bool FbxSceneLoader::Render()
 
 bool FbxSceneLoader::Release()
 {
+	// Resource Release
 	if (BoneCB)
 	{
 		BoneCB->Release();
@@ -75,6 +77,7 @@ HRESULT FbxSceneLoader::CreateConstantBuffer(ID3D11Device* device)
 
 bool FbxSceneLoader::Load(std::wstring FileName)
 {
+	// Load the fbx use File name
 	std::string name = WstrToStr(FileName);
 	bool ret = Importer->Initialize(name.c_str());
 	if (ret == false) 
@@ -99,8 +102,8 @@ bool FbxSceneLoader::Load(std::wstring FileName)
 		return false;
 	}
 	FbxAxisSystem SceneAxisSystem = Scene->GetGlobalSettings().GetAxisSystem();
-	FbxSystemUnit::m.ConvertScene(Scene);
-	FbxAxisSystem::MayaZUp.ConvertScene(Scene);
+	FbxSystemUnit::m.ConvertScene(Scene);// Convert the scene's unit system to a standard unit
+	FbxAxisSystem::MayaZUp.ConvertScene(Scene);// Convert the scene's coordinate system to match Maya's Z-up convention. 
 
 	RootNode = Scene->GetRootNode();
 	PreProcess(RootNode);
@@ -139,7 +142,7 @@ bool FbxSceneLoader::Load(ID3D11Device* device, std::wstring FileName)
 
 void FbxSceneLoader::PreProcess(FbxNode* Node)
 {
-	if (Node && (Node->GetCamera() || Node->GetLight())) 
+	if (Node && (Node->GetCamera() || Node->GetLight())) // Check if the node is valid and if it is a camera or light node
 	{
 		return;
 	}
@@ -163,11 +166,12 @@ void FbxSceneLoader::PreProcess(FbxNode* Node)
 
 		FbxNodeAttribute::EType type = ChildNode->GetNodeAttribute()->GetAttributeType();
 
+		// Check if the child node is of type Mesh, Skeleton, or Null
 		if ((type == FbxNodeAttribute::eMesh ||
 			type == FbxNodeAttribute::eSkeleton ||
 			type == FbxNodeAttribute::eNull))
 		{
-			PreProcess(ChildNode);
+			PreProcess(ChildNode); // Recursively process the child node
 		}
 	}
 }

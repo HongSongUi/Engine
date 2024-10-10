@@ -9,6 +9,7 @@ ID3D11DepthStencilState* DxState::_DefaultDepthStencil = nullptr;
 
 bool DxState::SetState(ID3D11Device* d3dDevice)
 {
+	//Create State
 	HRESULT hr;
 	D3D11_SAMPLER_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
@@ -53,6 +54,7 @@ bool DxState::SetState(ID3D11Device* d3dDevice)
 
 bool DxState::Release()
 {
+	//Resource Release
 	if (_DefaultSS) _DefaultSS->Release();
 	if (_DefaultRSSolid) _DefaultRSSolid->Release();
 	if (_DefaultRSWireFrame) _DefaultRSWireFrame->Release();

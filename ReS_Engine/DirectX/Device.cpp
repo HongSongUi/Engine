@@ -2,19 +2,25 @@
 
 bool Device::Init()
 {
-	if (FAILED(CreateDevice())) {
+	//DirectX Initialization
+	if (FAILED(CreateDevice()))
+	{
 		return false;
 	}
-	if (FAILED(CreateFactory())) {
+	if (FAILED(CreateFactory())) 
+	{
 		return false;
 	}
-	if (FAILED(CreateSwapChain())) {
+	if (FAILED(CreateSwapChain()))
+	{
 		return false;
 	}
-	if (FAILED(CreateRenderTargetView())) {
+	if (FAILED(CreateRenderTargetView())) 
+	{
 		return false;
 	}
-	if (FAILED(CreateDepthStencilView())) {
+	if (FAILED(CreateDepthStencilView())) 
+	{
 		return false;
 	}
 	CreateViewPort();
@@ -50,6 +56,7 @@ bool Device::Frame()
 
 bool Device::Release()
 {
+	//Resource Release
 	if (D3D11Device)  D3D11Device->Release();
 	if (D3D11Context) D3D11Context->Release();
 	if (GIFactory) GIFactory->Release();
@@ -122,6 +129,7 @@ HRESULT Device::CreateRenderTargetView()
 
 HRESULT Device::ResizeWindow(UINT width, UINT height)
 {
+	// Update when window size changes
 	HRESULT hr;
 	if (D3D11Device == nullptr) {
 		return S_OK;
@@ -133,7 +141,7 @@ HRESULT Device::ResizeWindow(UINT width, UINT height)
 	RenderTargetView = nullptr;
 	DepthStencilView->Release();
 	DepthStencilView = nullptr;
-	DXGI_SWAP_CHAIN_DESC CurrentSD;// , AfterSD;
+	DXGI_SWAP_CHAIN_DESC CurrentSD;
 	SwapChain->GetDesc(&CurrentSD);
 	hr = SwapChain->ResizeBuffers(CurrentSD.BufferCount, width, height, CurrentSD.BufferDesc.Format, 0);
 	if (FAILED(CreateRenderTargetView())) 

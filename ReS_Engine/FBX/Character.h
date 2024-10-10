@@ -6,6 +6,7 @@
 
 struct ActionTable 
 {
+	//struct with animation information
 	UINT StartFrame;
 	UINT EndFrame;
 	float TickPerFrame;
@@ -15,15 +16,16 @@ struct ActionTable
 	{
 		Loop = false;
 	}
-};\
+};
+
 class Character : public Object3D
 {
 public:
-	UINT FbxListID;
+	UINT FbxListID; //Manage fbx files as id
 	FbxSceneLoader* FbxFile = nullptr;
 	std::basic_string<wchar_t> ObjName;
 
-	Vector3 UpdateScaleVec = { 1.0f ,1.0f ,1.0f };
+	Vector3 UpdateScaleVec = { 1.0f ,1.0f ,1.0f }; 
 	Vector3 UpdateRotationVal = { 0.0f ,0.0f,0.0f };
 
 	Matrix TransposMat;
